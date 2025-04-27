@@ -1,4 +1,8 @@
-
+if isempty(matlab.project.currentProject)
+    matlab.project.loadProject('ADMIRE.prj');   
+end
+load("data\admireDatabase.mat");
+open_system('ADMIRE.slx');
 
 
 set_param(bdroot, 'LoadExternalInput', 'off');
