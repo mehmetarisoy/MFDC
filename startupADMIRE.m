@@ -9,13 +9,10 @@ set_param(bdroot, 'LoadExternalInput', 'off');
 set_param(bdroot, 'LoadInitialState', 'off');
 
 % Variant Subsystem Selection
-simFlag.Scope       = 1; % 0: Off | 1: On
-simFlag.FG          = false; % false: Off | true: On 
-simFlag.Actuator    = 1; % 0: Directfeed | 1: 1st Order
-simFlag.Input       = 0; % 0: Directfeed (From Inport) | 1: Logitech Extremen Pro 3D
+simFlag = setSimFlag('default');
 
 % Trim
-[op, opreport] = actrim('wl', 'v', 350, 'alt', 4000);
+[op, opreport] = actrim('wl', 'v', 350, 'alt', 900);
 
 % Define Linear Plant Input & Outputs
 ssList              = struct();

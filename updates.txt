@@ -1,0 +1,2 @@
+getLinModel: modified input & output names
+setSimFlag : function to create preset simFlag

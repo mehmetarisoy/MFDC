@@ -42,8 +42,10 @@ function linss = getLinModel(modelName, ssList, op)
                         breakCounter = breakCounter + 1;
                 end
             end
-    
-            linss.(modelNames{iter}) = getIOTransfer(sl, inputList, outputList, breakList);
+
+            linss.(modelNames{iter})            = getIOTransfer(sl, inputList, outputList, breakList);
+            linss.(modelNames{iter}).InputName  = subModifyIONames(modelName, inputList);
+            linss.(modelNames{iter}).OutputName = subModifyIONames(modelName, outputList);
         end
     end
 
@@ -88,6 +90,29 @@ function out = subSignal(s)
         out = sprintf('%s/%d[%s]', s{2}, s{3}, s{4});
     else
         return;
+    end
+
+end
+
+function newNameList = subModifyIONames(modelName, nameList)
+
+    newNameList = cell(numel(nameList), 1);
+
+    for iName = 1:numel(nameList)
+        if isempty(strfind(nameList{iName}, '['))
+            tmp                     = strfind(nameList{iName}, '/');
+            tmpName                 = nameList{iName}(1:tmp - 1);
+            blockName               = sprintf('%s/%s', modelName, tmpName);
+            portNumber              = str2double(nameList{iName}(tmp+1:end));
+            blockOutputSignalNames  = get_param(blockName, 'OutputSignalNames');
+            newNameList{iName}      = blockOutputSignalNames{portNumber};
+        else
+            leftBracket     = strfind(nameList{iName}, '[');
+            rightBracket    = strfind(nameList{iName}, ']');
+
+            tmp = strsplit(nameList{iName}(leftBracket+1:rightBracket-1), '.');
+            newNameList{iName} = tmp{end};
+        end
     end
 
 end
